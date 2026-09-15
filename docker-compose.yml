@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: gullar-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gullar
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - gullar-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  gullar-postgres-data:
