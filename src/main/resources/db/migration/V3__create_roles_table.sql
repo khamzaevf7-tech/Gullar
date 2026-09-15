@@ -2,6 +2,7 @@ CREATE TABLE roles (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(30) NOT NULL UNIQUE
 );
+
 INSERT INTO roles (name)
 VALUES
     ('CUSTOMER'),
