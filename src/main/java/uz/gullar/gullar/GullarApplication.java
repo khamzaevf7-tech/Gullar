@@ -9,5 +9,5 @@ public class GullarApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GullarApplication.class, args);
 	}
-
 }
+
