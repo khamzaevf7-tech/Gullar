@@ -9,16 +9,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uz.gullar.gullar.auth.service.JwtService;
-
+import uz.gullar.gullar.auth.repository.UserRepository;
 import java.io.IOException;
-import java.util.Collections;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.List;
+import uz.gullar.gullar.auth.repository.RoleRepository;
+
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(
+            JwtService jwtService,
+            UserRepository userRepository,
+            RoleRepository roleRepository
+    ) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -50,7 +61,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                                 email,
                                 null,
-                                Collections.emptyList()
+                                List.of(
+                                        new SimpleGrantedAuthority(
+                                                "ROLE_" + roleRepository.findById(
+                                                        userRepository.findByEmail(email)
+                                                                .orElseThrow()
+                                                                .getRoleId()
+                                                ).orElseThrow().getName()
+                                        )
+                                )
                         );
 
                 authentication.setDetails(

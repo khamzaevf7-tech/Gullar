@@ -11,6 +11,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uz.gullar.gullar.auth.security.JwtAuthenticationFilter;
 import uz.gullar.gullar.auth.service.JwtService;
+import uz.gullar.gullar.auth.repository.UserRepository;
+import uz.gullar.gullar.auth.repository.RoleRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -23,9 +25,15 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(
-            JwtService jwtService
+            JwtService jwtService,
+            UserRepository userRepository,
+            RoleRepository roleRepository
     ) {
-        return new JwtAuthenticationFilter(jwtService);
+        return new JwtAuthenticationFilter(
+                jwtService,
+                userRepository,
+                roleRepository
+        );
     }
 
     @Bean
@@ -43,6 +51,12 @@ public class SecurityConfig {
                                 "/api/v1/auth/register",
                                 "/api/v1/auth/login"
                         ).permitAll()
+                        .requestMatchers("/api/v1/customer/**")
+                        .hasRole("CUSTOMER")
+                        .requestMatchers("/api/v1/florist/**")
+                        .hasRole("FLORIST")
+                        .requestMatchers("/api/v1/admin/**")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
