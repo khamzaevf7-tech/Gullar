@@ -35,5 +35,36 @@ public class JwtService {
                 .expiration(expiresAt)
                 .signWith(secretKey)
                 .compact();
+}
+
+    public String extractEmail(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+}
+    public boolean isTokenValid(String token, String email) {
+        try {
+            String tokenEmail = extractEmail(token);
+
+            return tokenEmail.equals(email)
+                    && !isTokenExpired(token);
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+    
+    private boolean isTokenExpired(String token) {
+        Date expirationDate = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+        
+        return expirationDate.before(new Date());
     }
 }
+
