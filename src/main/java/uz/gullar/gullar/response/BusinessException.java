@@ -1,4 +1,4 @@
-package uz.gullar.gullar.common.exception;
+package uz.gullar.gullar.response;
 
 import org.springframework.http.HttpStatus;
 

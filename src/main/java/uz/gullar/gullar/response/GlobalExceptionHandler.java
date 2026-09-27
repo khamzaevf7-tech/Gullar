@@ -1,4 +1,4 @@
-package uz.gullar.gullar.common.exception;
+package uz.gullar.gullar.response;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -6,7 +6,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import uz.gullar.gullar.common.response.ApiErrorResponse;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
