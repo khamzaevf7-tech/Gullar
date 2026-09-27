@@ -1,4 +1,4 @@
-package uz.gullar.gullar.response;
+package uz.gullar.gullar.exception.response;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

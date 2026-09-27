@@ -17,7 +17,7 @@ public class CurrentUserController {
     private final CurrentUserService currentUserService;
 
     public CurrentUserController(CurrentUserService currentUserService)
-{
+    {
         this.currentUserService = currentUserService;
     }
 

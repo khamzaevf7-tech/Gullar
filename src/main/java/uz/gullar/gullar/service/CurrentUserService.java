@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.gullar.gullar.entity.User;
 import uz.gullar.gullar.repository.UserRepository;
-import uz.gullar.gullar.response.BusinessException;
+import uz.gullar.gullar.exception.response.BusinessException;
 
 @Service
 public class CurrentUserService {

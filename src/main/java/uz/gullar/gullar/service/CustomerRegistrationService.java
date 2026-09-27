@@ -9,7 +9,7 @@ import uz.gullar.gullar.entity.Role;
 import uz.gullar.gullar.entity.User;
 import uz.gullar.gullar.repository.RoleRepository;
 import uz.gullar.gullar.repository.UserRepository;
-import uz.gullar.gullar.response.BusinessException;
+import uz.gullar.gullar.exception.response.BusinessException;
 
 @Service
 public class CustomerRegistrationService {
