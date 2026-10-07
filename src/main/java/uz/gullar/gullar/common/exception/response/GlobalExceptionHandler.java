@@ -2,6 +2,7 @@ package uz.gullar.gullar.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiErrorResponse handleValidationException(
+    public ResponseEntity<ApiErrorResponse> handleValidationException(
             MethodArgumentNotValidException exception,
             HttpServletRequest request
     ) {
@@ -31,60 +32,68 @@ public class GlobalExceptionHandler {
                         (firstMessage, secondMessage) -> firstMessage
                 ));
 
-        return new ApiErrorResponse(
-                OffsetDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "VALIDATION_ERROR",
-                "Request ma'lumotlari noto'g'ri",
-                request.getRequestURI(),
-                details
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ApiErrorResponse(
+                        OffsetDateTime.now(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "VALIDATION_ERROR",
+                        "Request ma'lumotlari noto'g'ri",
+                        request.getRequestURI(),
+                        details
+                )
         );
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public ApiErrorResponse handleResourceNotFound(
+    public ResponseEntity<ApiErrorResponse> handleResourceNotFound(
             NoResourceFoundException exception,
             HttpServletRequest request
     ) {
-        return new ApiErrorResponse(
-                OffsetDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                "RESOURCE_NOT_FOUND",
-                "So'ralgan resurs topilmadi",
-                request.getRequestURI(),
-                Map.of()
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ApiErrorResponse(
+                        OffsetDateTime.now(),
+                        HttpStatus.NOT_FOUND.value(),
+                        "RESOURCE_NOT_FOUND",
+                        "So'ralgan resurs topilmadi",
+                        request.getRequestURI(),
+                        Map.of()
+                )
         );
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ApiErrorResponse handleBusinessException(
+    public ResponseEntity<ApiErrorResponse> handleBusinessException(
             BusinessException exception,
             HttpServletRequest request
     ) {
         HttpStatus status = exception.getStatus();
 
-        return new ApiErrorResponse(
-                OffsetDateTime.now(),
-                status.value(),
-                exception.getErrorCode(),
-                exception.getMessage(),
-                request.getRequestURI(),
-                Map.of()
+        return ResponseEntity.status(status).body(
+                new ApiErrorResponse(
+                        OffsetDateTime.now(),
+                        status.value(),
+                        exception.getErrorCode(),
+                        exception.getMessage(),
+                        request.getRequestURI(),
+                        Map.of()
+                )
         );
     }
 
     @ExceptionHandler(Exception.class)
-    public ApiErrorResponse handleUnexpectedException(
+    public ResponseEntity<ApiErrorResponse> handleUnexpectedException(
             Exception exception,
             HttpServletRequest request
     ) {
-        return new ApiErrorResponse(
-                OffsetDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "INTERNAL_SERVER_ERROR",
-                "Serverda kutilmagan xatolik yuz berdi",
-                request.getRequestURI(),
-                Map.of()
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ApiErrorResponse(
+                        OffsetDateTime.now(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "INTERNAL_SERVER_ERROR",
+                        "Serverda kutilmagan xatolik yuz berdi",
+                        request.getRequestURI(),
+                        Map.of()
+                )
         );
     }
 }
