@@ -1,7 +1,7 @@
 ALTER TABLE users
-ADD COLUMN role_id BIGINT;
+    ADD COLUMN role_id BIGINT;
 
 ALTER TABLE users
-ADD CONSTRAINT fk_users_role
-FOREIGN KEY (role_id)
-REFERENCES roles(id);
+    ADD CONSTRAINT fk_users_role
+        FOREIGN KEY (role_id)
+            REFERENCES roles(id);
