@@ -70,6 +70,11 @@ public class User {
         return status;
     }
 
+    public void updateStatus(String status) {
+        this.status = status;
+        this.updatedAt = OffsetDateTime.now();
+    }
+
     public Long getRoleId() {
         return roleId;
     }

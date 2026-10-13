@@ -1,0 +1,10 @@
+CREATE TABLE florist_profiles (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE REFERENCES users(id),
+    business_name VARCHAR(255) NOT NULL,
+    address TEXT NOT NULL,
+    working_hours TEXT NOT NULL,
+    service_area TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
